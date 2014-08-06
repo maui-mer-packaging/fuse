@@ -1,0 +1,71 @@
+Name: fuse
+Version: 2.9.0
+Release: 1
+Summary: File System in Userspace (FUSE) utilities
+Description: |
+  With FUSE it is possible to implement a fully functional filesystem in a
+  userspace program. This package contains the FUSE userspace tools to
+  mount a FUSE filesystem.
+Group: System/Base
+License: LGPLv2+
+URL: http://fuse.sf.net
+Sources:
+    - "%{name}-%{version}.tar.xz"
+    - "%{name}.conf"
+Patches:
+    - fuse-udev_rules.patch
+    - fuse-0001-More-parentheses.patch
+SetupOptions: -q -n %{name}-%{version}/upstream
+
+PkgBR:
+    - gettext-devel
+PkgConfigBR:
+    - systemd
+
+Requires:
+    - which
+
+Configure: configure
+ConfigOptions:
+    - --enable-example
+
+Files:
+    - "%doc COPYING"
+    - "%{_sbindir}/mount.fuse"
+    - "%attr(4755,root,root) %{_bindir}/fusermount"
+    - "%{_bindir}/ulockmgr_server"
+    - "%exclude %{_sysconfdir}/init.d/fuse"
+    - "%config %{_udevrulesdir}/99-fuse.rules"
+    - "%{_mandir}/man1/fusermount.1.gz"
+    - "%{_mandir}/man1/ulockmgr_server.1.gz"
+    - "%{_mandir}/man8/mount.fuse.8.gz"
+    - "%config(noreplace) %{_sysconfdir}/%{name}.conf"
+
+SubPackages:
+    - Name: devel
+      Summary: File System in Userspace (FUSE) devel files
+      Group: Development/Libraries
+      Description: |
+          With FUSE it is possible to implement a fully functional filesystem in a
+          userspace program. This package contains development files (headers,
+          pgk-config) to develop FUSE based applications/filesystems.
+      Files:
+          - "%doc AUTHORS ChangeLog COPYING FAQ Filesystems NEWS README README.NFS"
+          - "%{_libdir}/libfuse.so"
+          - "%{_libdir}/libulockmgr.so"
+          - "%{_libdir}/pkgconfig/*.pc"
+          - "%{_includedir}/fuse.h"
+          - "%{_includedir}/ulockmgr.h"
+          - "%{_includedir}/fuse"
+
+    - Name: libs
+      Summary: File System in Userspace (FUSE) libraries
+      Group: System/Libraries
+      Description: |
+          Devel With FUSE it is possible to implement a fully functional filesystem in a
+          userspace program. This package contains the FUSE libraries.
+      Files:
+          - "%doc COPYING.LIB"
+          - "%{_libdir}/libfuse.so.*"
+          - "%{_libdir}/libulockmgr.so.*"
+
