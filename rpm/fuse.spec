@@ -83,6 +83,11 @@ rm -rf %{buildroot}
 %make_install
 
 # >> install post
+# Relocate mount.fuse to /usr
+mkdir -p %{buildroot}%{_sbindir}
+mv -f %{buildroot}/sbin/* %{buildroot}%{_sbindir}
+rm -rf %{buildroot}/sbin
+
 install -D -m 644 %{SOURCE1} %{buildroot}%{_sysconfdir}/fuse.conf
 %ifnarch %{ix86} x86_64
 # HACK!!! Please remove when possible.
